@@ -1,3 +1,5 @@
+package utilidades;
+
 /**
  * Representa una fecha con día, mes y año.
  * @author
@@ -70,7 +72,7 @@ public class Fecha {
         return dias;
     }
 
-    private static boolean esBisiesto(int anio) {
+    public static boolean esBisiesto(int anio) {
         if ( (anio % 400 == 0) ||
                 ( (anio % 4 == 0) && (anio % 100 != 0) ) )
             return true;
@@ -94,19 +96,19 @@ public class Fecha {
     public int diaDelAnio() {
         int[] diasPorMes = {31,28,31, 30,31, 30,31,31, 30,31, 30,31};
         int diasHastaFecha = 0;
-        for (int i = 1; i <= this.mes; i++) {
+        for (int i = 0; i < this.mes-1; i++) {
             diasHastaFecha += diasPorMes[i];
         }
-        diasHastaFecha=this.dia;
+        diasHastaFecha+=this.dia;
+        if(esBisiesto() && diasHastaFecha>59)diasHastaFecha++;
         return diasHastaFecha;
     }
-
     /**
      * Método que calucla si la fecha implicita del método es posterior a la pasada por parámetro o no
      * @param otraFecha
      * @return
      */
-    private boolean esPosterior(Fecha otraFecha) {
+     boolean esPosterior(Fecha otraFecha) {
         if (this.anio > otraFecha.anio) {
             return true;
         } else if (this.anio==otraFecha.anio) {
@@ -114,14 +116,7 @@ public class Fecha {
         } else {
             return false;
         }
-
-
     }
-
-
-
-
-
     /**
      * Calcula la diferencia en días entre esta fecha y otra fecha especificada.
      * @param otraFecha La otra fecha con la que se calculará la diferencia.
@@ -160,14 +155,10 @@ public class Fecha {
                 diasTotales++;
             }
         }
-
         // Sumamos los días transcurridos en la fecha mayor
         diasTotales += fechaMayor.diaDelAnio();
         return invertirSigno *diasTotales;
-
     }
-
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -175,6 +166,4 @@ public class Fecha {
         Fecha fecha = (Fecha) obj;
         return dia == fecha.dia && mes == fecha.mes && anio == fecha.anio;
     }
-
-
 }
